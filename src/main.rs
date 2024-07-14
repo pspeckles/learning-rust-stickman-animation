@@ -10,6 +10,7 @@ mod animation_controller;
 use animation_controller::AnimationController;
 use stickman::position::Position;
 use stickman::prop::{Flag, FlagPosition};
+use stickman::standing_animation::standing_animation;
 
 fn main() {
     let mut window = RenderWindow::new(
@@ -19,30 +20,9 @@ fn main() {
         &Default::default(),
     );
     window.set_vertical_sync_enabled(true);
-    let standing_pose_1 = Pose {
-        position_shift: Point::new(0.0, 0.0),
-        arm_left_upper: Rotation::new(-20.0),
-        arm_left_lower: Rotation::new(-30.0),
-        arm_right_upper: Rotation::new(150.0),
-        arm_right_lower: Rotation::new(50.0),
-        leg_left_upper: Rotation::new(130.0),
-        leg_left_lower: Rotation::new(70.0),
-        leg_right_upper: Rotation::new(70.0),
-        leg_right_lower: Rotation::new(30.0),
-    };
-    let standing_pose_2 = Pose {
-        position_shift: Point::new(0.0, 0.0),
-        arm_left_upper: Rotation::new(-20.0),
-        arm_left_lower: Rotation::new(-35.0),
-        arm_right_upper: Rotation::new(140.0),
-        arm_right_lower: Rotation::new(40.0),
-        leg_left_upper: Rotation::new(120.0),
-        leg_left_lower: Rotation::new(80.0),
-        leg_right_upper: Rotation::new(60.0),
-        leg_right_lower: Rotation::new(40.0),
-    };
+
     let figure = &mut stickman::skeleton::Skeleton::new(120.0, 2.0);
-    let standing_still = Animation::new(vec![standing_pose_1, standing_pose_2]);
+    let standing_still = standing_animation();
     let mut animator = AnimationController::new(standing_still);
 
     let left_flag = &mut Flag::new(30.0, 40.0);
