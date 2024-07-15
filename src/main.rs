@@ -1,16 +1,20 @@
 use sfml::graphics::{Color, Transformable};
 use sfml::graphics::{RenderTarget, RenderWindow};
-use sfml::window::{Event, Style};
+use sfml::system::Vector2f;
+use sfml::window::{mouse, Event, Style};
 
 mod stickman;
 use stickman::animation::Animation;
 use stickman::pose::{figure_end_y, Point, Pose, Rotation};
-
-mod animation_controller;
-use animation_controller::AnimationController;
 use stickman::position::Position;
 use stickman::prop::{Flag, FlagPosition};
 use stickman::standing_animation::standing_animation;
+
+mod animation_controller;
+use animation_controller::AnimationController;
+
+mod ui;
+use ui::UI;
 
 fn main() {
     let mut window = RenderWindow::new(
@@ -25,33 +29,55 @@ fn main() {
     let standing_still = standing_animation();
     let mut animator = AnimationController::new(standing_still);
 
+    let mut ui = UI::new();
+    ui.add_button(
+        Vector2f::new(10.0, 10.0),
+        Vector2f::new(100.0, 40.0),
+        "Pause",
+        test_print,
+    );
+
+    fn test_print() {
+        println!("Pause")
+    }
+    // ui.add_button(
+    //     Vector2f::new(120.0, 10.0),
+    //     Vector2f::new(100.0, 40.0),
+    //     "Change Pose",
+    // );
+    // ui.add_button(
+    //     Vector2f::new(230.0, 10.0),
+    //     Vector2f::new(100.0, 40.0),
+    //     "About",
+    // );
+
     let left_flag = &mut Flag::new(30.0, 40.0);
     let left_flag_position = FlagPosition::new(270.0);
     let left_flag_position_2 = FlagPosition::new(250.0);
     let left_flag_waving = Animation::new(vec![left_flag_position, left_flag_position_2]);
     let mut left_flag_animator = AnimationController::new(left_flag_waving);
-    // // Animation variables
+
+    // Animation variables
     let mut frame = 0;
-    // let mut breathing_offset: f32 = 0.0;
-    // let mut breathing_direction = 1.0;
-    // let breathing_speed: f32 = 0.2;
-    //
-    // let breathing_offset_max = 3.0;
-    // let breathing_offset_min = -2.0;
-    // let breathing_rotation_multiplier = 1.5;
-    // sfml::system::sleep(Time::seconds(10.0));
+
     while window.is_open() {
         while let Some(event) = window.poll_event() {
-            if event == Event::Closed {
-                window.close();
+            match event {
+                Event::Closed => window.close(),
+                Event::MouseButtonPressed { button, x, y } => {
+                    if button == mouse::Button::Left {
+                        println!("{:?}", button);
+                        ui.handle_click(Vector2f::new(x as f32, y as f32));
+                    }
+                }
+                _ => {}
             }
         }
+
         // Update animation frame
         frame = (frame + 1) % 60;
-        //
-        // // Breathing effect
         if frame % 10 == 0 {
-            animator.animate(figure, &Point::new(300.0, 300.0));
+            animator.animate(figure, &Point::new(300.0, 200.0));
 
             let left_flag_start_point = figure_end_y(
                 figure.arm_left_lower.size().x,
@@ -62,49 +88,14 @@ fn main() {
                 figure.arm_left_lower.rotation(),
             );
             left_flag_animator.animate(left_flag, &Point::from_tuple(left_flag_start_point));
-
-            //     breathing_offset += (breathing_speed + (breathing_speed * breathing_offset.abs()))
-            //         * breathing_direction;
-            //     if breathing_offset >= breathing_offset_max {
-            //         breathing_direction = -1.0;
-            //         breathing_offset = breathing_offset_max;
-            //     } else if breathing_offset < breathing_offset_min {
-            //         breathing_direction = 1.0;
-            //         breathing_offset = breathing_offset_min;
-            //     }
         }
-        //
-        // // Update stickman position
-        // head.set_position((figure.head_pos().0, figure.head_pos().1 + breathing_offset));
-        // body.set_position((
-        //     figure.body_position().0,
-        //     figure.body_position().1 + breathing_offset,
-        // ));
-        //
-        // arm_left.set_position((
-        //     figure.left_arm_pos().0,
-        //     figure.left_arm_pos().1 + breathing_offset,
-        // ));
-        // arm_left.set_rotation(30.0 + breathing_offset * breathing_rotation_multiplier);
-        //
-        // arm_right.set_position((
-        //     figure.righ_arm_pos().0,
-        //     figure.righ_arm_pos().1 + breathing_offset,
-        // ));
-        // arm_right.set_rotation(-30.0 - breathing_offset * breathing_rotation_multiplier);
-        //
-        // leg_left.set_position((figure.left_leg_pos().0, figure.left_leg_pos().1));
-        // leg_left.set_rotation(25.0 + breathing_offset * breathing_rotation_multiplier);
-        //
-        // leg_right.set_position((figure.right_leg_pos().0, figure.right_leg_pos().1));
-        // leg_right.set_rotation(-25.0 - breathing_offset * breathing_rotation_multiplier);
-        //
-        // // Clear the window
+        // Clear the window
         window.clear(Color::BLACK);
 
         // Draw stickman
         figure.draw(&mut window);
         left_flag.draw(&mut window);
+        ui.draw(&mut window);
         window.display();
     }
 }
