@@ -14,7 +14,7 @@ mod animation_controller;
 use animation_controller::AnimationController;
 
 mod ui;
-use ui::UI;
+use ui::buttons::ButtonGroup;
 
 fn main() {
     let mut window = RenderWindow::new(
@@ -29,8 +29,8 @@ fn main() {
     let standing_still = standing_animation();
     let mut animator = AnimationController::new(standing_still);
 
-    let mut ui = UI::new();
-    ui.add_button(
+    let mut main_buttons = ButtonGroup::new();
+    main_buttons.add_button(
         Vector2f::new(10.0, 10.0),
         Vector2f::new(100.0, 40.0),
         "Pause",
@@ -67,7 +67,7 @@ fn main() {
                 Event::MouseButtonPressed { button, x, y } => {
                     if button == mouse::Button::Left {
                         println!("{:?}", button);
-                        ui.handle_click(Vector2f::new(x as f32, y as f32));
+                        main_buttons.handle_click(Vector2f::new(x as f32, y as f32));
                     }
                 }
                 _ => {}
@@ -95,7 +95,7 @@ fn main() {
         // Draw stickman
         figure.draw(&mut window);
         left_flag.draw(&mut window);
-        ui.draw(&mut window);
+        main_buttons.draw(&mut window);
         window.display();
     }
 }
