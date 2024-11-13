@@ -1,14 +1,18 @@
 use sfml::graphics::{Font, RectangleShape, RenderTarget, Shape, Text, Transformable};
 use sfml::system::Vector2f;
 
+use crate::actor::animation::AnimationFrames;
+use crate::animation_controller::AnimationController;
+
 static FONT_PATH: &str = "resources/OpenSans-Regular.ttf";
-type ButtonClickCallback = fn();
+// type ButtonClickCallback = fn();
+// type ButtonClickCallback = FnMut();
 
 pub struct Button {
     shape: RectangleShape<'static>,
     position: Vector2f,
     label: &'static str,
-    callback: ButtonClickCallback,
+    callback: Box<dyn Fn()>,
 }
 
 pub struct ButtonGroup {
@@ -27,7 +31,7 @@ impl ButtonGroup {
         position: Vector2f,
         size: Vector2f,
         label: &'static str,
-        callback: ButtonClickCallback,
+        callback: Box<dyn Fn()>,
     ) {
         let mut shape = RectangleShape::new();
         shape.set_position(position);
@@ -43,7 +47,7 @@ impl ButtonGroup {
     }
 
     pub fn handle_click(&mut self, mouse_pos: Vector2f) {
-        for button in self.buttons.iter() {
+        for button in self.buttons.iter_mut() {
             if button.shape.global_bounds().contains(mouse_pos) {
                 (button.callback)();
             }

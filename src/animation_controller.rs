@@ -1,31 +1,28 @@
-use crate::stickman::animation::Animation;
-use crate::stickman::pose::Point;
-use crate::stickman::position::Position;
-use crate::stickman::skeleton::Skeleton;
+use std::cell::Cell;
 
-#[derive(Debug)]
-pub struct AnimationController<T: Position> {
-    animation: Animation<T>,
+use crate::actor::{actor_pose::ActorPose, animation::AnimationFrames, position::Position};
+
+#[derive(Debug, Clone)]
+pub struct AnimationController {
+    animation: AnimationFrames,
+    frame_num: Cell<usize>,
 }
 
-impl<T: Position> AnimationController<T> {
-    pub fn new(init_animation: Animation<T>) -> Self {
+impl<'a> AnimationController {
+    pub fn new(init_animation: AnimationFrames) -> Self {
         AnimationController {
             animation: init_animation,
+            frame_num: Cell::new(0),
         }
     }
 
-    pub fn set_animation(&mut self, animation: Animation<T>) {
-        self.animation = animation;
+    pub fn animate(&self) -> &ActorPose {
+        let (frame, next_frame_num) = self.animation.next_frame(&self.frame_num.get());
+        self.frame_num.set(next_frame_num);
+        frame
     }
 
-    pub fn animate(&mut self, obj: &mut T::Positionable, point: &Point) {
-        let pose = self.animation.next_frame();
-        pose.apply_to(obj, point);
-    }
-
-    pub fn stop_animation(&self) -> bool {
-        // self.animation.reset();
-        true
+    pub fn stop_animation(&mut self) {
+        self.frame_num.set(0);
     }
 }
