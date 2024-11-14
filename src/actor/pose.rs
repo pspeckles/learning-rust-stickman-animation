@@ -1,21 +1,24 @@
 use super::primitives::{Point, Rotation};
 
-pub const TOP: f32 = -90.0;
-pub const LEFT: f32 = -180.0;
+pub const TOP: f32 = 270.0;
+pub const TOP_N: f32 = -90.0;
+pub const LEFT: f32 = 180.0;
 pub const RIGHT: f32 = 0.0;
 pub const BOTTOM: f32 = 90.0;
+pub const QUARTER_CLOCKWISE: f32 = 90.0;
+pub const QUARTER_ANTI_CLOCKWISE: f32 = -90.0;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Pose {
     pub position_shift: Point,
-    pub arm_left_upper: Rotation,
-    pub arm_left_lower: Rotation,
     pub arm_right_upper: Rotation,
     pub arm_right_lower: Rotation,
-    pub leg_left_upper: Rotation,
-    pub leg_left_lower: Rotation,
     pub leg_right_upper: Rotation,
     pub leg_right_lower: Rotation,
+    pub leg_left_upper: Rotation,
+    pub leg_left_lower: Rotation,
+    pub arm_left_upper: Rotation,
+    pub arm_left_lower: Rotation,
 }
 
 impl Pose {

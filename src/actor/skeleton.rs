@@ -175,7 +175,7 @@ impl Position for RenderingParts {
         );
         let arm_left_lower = &mut parts.arm_left_lower;
         arm_left_lower.set_position(arm_left_upper_end);
-        let arm_left_lower_joint = pose.joints[1];
+        let arm_left_lower_joint = skeleton_pose.arm_left_lower;
         arm_left_lower.set_rotation(arm_left_lower_joint.r);
 
         //arm right
@@ -225,6 +225,6 @@ impl Position for RenderingParts {
         );
         let leg_right_lower = &mut parts.leg_right_lower;
         leg_right_lower.set_position(leg_right_upper_end);
-        leg_right_lower.set_rotation(skeleton_pose.leg_left_lower.r);
+        leg_right_lower.set_rotation(skeleton_pose.leg_right_lower.r);
     }
 }

@@ -21,6 +21,9 @@ impl ActorPose {
             println!("from {:?}, to {:?}", from, to);
             panic!("cannot interpolate different poses")
         }
+        if number_of_poses < 2 {
+            panic!("number_of_poses cannot be less than 2")
+        }
         let mut poses = Vec::with_capacity(number_of_poses);
         let number_of_poses_divider: f32 = number_of_poses as f32;
         let position_shift_step = Point::from_tuple((
@@ -35,8 +38,7 @@ impl ActorPose {
         }
 
         poses.push(ActorPose::new(from.position_shift, from.joints.to_owned()));
-
-        for i in 0..number_of_poses - 1 {
+        for i in 0..number_of_poses - 2 {
             let prev_pose = poses.get(i).unwrap();
             let interim_pose = ActorPose::new(
                 prev_pose.position_shift + position_shift_step,
@@ -49,6 +51,8 @@ impl ActorPose {
             );
             poses.push(interim_pose);
         }
+        poses.push(ActorPose::new(to.position_shift, to.joints.to_owned()));
+
         poses
     }
 }

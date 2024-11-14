@@ -1,43 +1,43 @@
 use super::{
     actor_pose::ActorPose,
     animation::AnimationFrames,
-    pose::{BOTTOM, LEFT, RIGHT, TOP},
+    pose::{BOTTOM, LEFT, QUARTER_ANTI_CLOCKWISE, QUARTER_CLOCKWISE, RIGHT, TOP, TOP_N},
     primitives::Point,
 };
 
 pub fn squatting_animation() -> AnimationFrames {
     let standing_pose = ActorPose::new(
-        Point::new(0.0, 8.0),
+        Point::new(0.0, -30.0),
         vec![
-            (RIGHT).into(),
-            ((BOTTOM + RIGHT) / 2.0).into(),
-            ((BOTTOM + RIGHT) / 2.0).into(),
+            (RIGHT + QUARTER_CLOCKWISE / 3.0).into(),
             (BOTTOM).into(),
-            (LEFT).into(),
+            (RIGHT + QUARTER_CLOCKWISE / 3.0).into(),
             (BOTTOM).into(),
-            (LEFT).into(),
+            (LEFT + QUARTER_ANTI_CLOCKWISE / 3.0).into(),
+            (BOTTOM).into(),
+            (LEFT + QUARTER_ANTI_CLOCKWISE / 3.0).into(),
             (BOTTOM).into(),
         ],
     );
     let squatting_pose = ActorPose::new(
-        Point::new(0.0, -8.0),
+        Point::new(0.0, 30.0),
         vec![
-            (RIGHT + 10.0).into(),
+            (RIGHT + QUARTER_ANTI_CLOCKWISE / 3.0).into(),
+            (TOP_N).into(),
+            (RIGHT + QUARTER_ANTI_CLOCKWISE / 3.0).into(),
             (BOTTOM).into(),
-            (RIGHT + 10.0).into(),
+            (LEFT + QUARTER_CLOCKWISE / 3.0).into(),
             (BOTTOM).into(),
-            (LEFT - 10.0).into(),
-            (10.0).into(),
-            (LEFT - 10.0).into(),
-            (10.0).into(),
+            (LEFT + QUARTER_CLOCKWISE / 3.0).into(),
+            (TOP).into(),
         ],
     );
 
-    let mut animation = ActorPose::interpolate(&standing_pose, &squatting_pose, 4);
+    let mut animation = ActorPose::interpolate(&standing_pose, &squatting_pose, 5);
     animation.append(&mut ActorPose::interpolate(
         &squatting_pose,
         &standing_pose,
-        8,
+        5,
     ));
 
     AnimationFrames::new(animation)
