@@ -1,7 +1,6 @@
 use std::rc::Rc;
 
-use actor::skeleton::Skeleton;
-use actor::squatting_animation::{self, squatting_animation};
+use actor::entity::Skeleton;
 use sfml::graphics::Color;
 use sfml::graphics::{RenderTarget, RenderWindow};
 use sfml::system::Vector2f;

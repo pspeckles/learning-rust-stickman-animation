@@ -1,8 +1,4 @@
-use std::{
-    borrow::{Borrow, BorrowMut},
-    cell::{Cell, RefCell, RefMut},
-    rc::Rc,
-};
+use std::cell::{Cell, RefCell};
 
 use sfml::{
     graphics::{
@@ -17,6 +13,11 @@ use super::{
     actor_pose::ActorPose, draw::Draw, geometry::figure_end_y, pose::Pose, position::Position,
     squatting_animation::squatting_animation, standing_animation::standing_animation,
 };
+
+trait Entity<T, P> {
+    fn get_type() -> T;
+    fn get_properties() -> P;
+}
 
 type BodyPart = Box<RectangleShape<'static>>;
 #[derive(Debug, Clone)]
@@ -88,7 +89,7 @@ fn init_animations() -> Vec<AnimationController> {
     let squatting = AnimationController::new(squatting_animation());
     let standing_animation = AnimationController::new(standing_animation());
 
-    return vec![standing_animation, squatting];
+    vec![standing_animation, squatting]
 }
 
 impl Draw for RenderingParts {
