@@ -18,7 +18,8 @@ fn main() {
         "Stickman Animation",
         Style::CLOSE,
         &Default::default(),
-    );
+    )
+    .unwrap();
     window.set_vertical_sync_enabled(true);
 
     let sk = Skeleton::new((300.0, 200.0), 120.0, 2.0);

@@ -14,14 +14,9 @@ use super::{
     squatting_animation::squatting_animation, standing_animation::standing_animation,
 };
 
-trait Entity<T, P> {
-    fn get_type() -> T;
-    fn get_properties() -> P;
-}
-
 type BodyPart = Box<RectangleShape<'static>>;
 #[derive(Debug, Clone)]
-pub struct RenderingParts {
+struct RenderingParts {
     head: Box<CircleShape<'static>>,
     body: Box<RectangleShape<'static>>,
     arm_right_upper: BodyPart,
@@ -77,7 +72,7 @@ impl Skeleton {
 
     pub fn animate(&self) {
         let animation = self.animations.get(self.current_animation.get()).unwrap();
-        self.parts.borrow_mut().into_pose(animation.animate());
+        self.parts.borrow_mut().set_position(animation.animate());
     }
 
     pub fn draw(&self, window: &mut RenderWindow) {
@@ -150,7 +145,7 @@ fn limb_width_from(width: f32) -> f32 {
 }
 
 impl Position for RenderingParts {
-    fn into_pose(&mut self, pose: &ActorPose) {
+    fn set_position(&mut self, pose: &ActorPose) {
         let skeleton_pose = Pose::new(pose.position_shift, &pose.joints);
         let parts = self;
         let head = &mut parts.head;

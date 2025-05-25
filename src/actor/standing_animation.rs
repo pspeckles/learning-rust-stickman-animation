@@ -5,7 +5,7 @@ use super::primitives::{Point, Rotation};
 use super::animation::AnimationFrames;
 
 pub fn standing_animation() -> AnimationFrames {
-    let standing_pose_1 = ActorPose::new(
+    let standing_pose_1 = &ActorPose::new(
         Point::new(0.0, 3.0),
         vec![
             Rotation::new(70.0),
@@ -18,7 +18,7 @@ pub fn standing_animation() -> AnimationFrames {
             Rotation::new(50.0),
         ],
     );
-    let standing_pose_2 = ActorPose::new(
+    let standing_pose_2 = &ActorPose::new(
         Point::new(0.0, -3.0),
         vec![
             Rotation::new(60.0),
@@ -31,11 +31,7 @@ pub fn standing_animation() -> AnimationFrames {
             Rotation::new(40.0),
         ],
     );
-    let mut standing_animation = ActorPose::interpolate(&standing_pose_1, &standing_pose_2, 3);
-    standing_animation.append(&mut ActorPose::interpolate(
-        &standing_pose_2,
-        &standing_pose_1,
-        8,
-    ));
+    let standing_animation =
+        ActorPose::interpolate(&vec![standing_pose_1, standing_pose_2, standing_pose_1], 4);
     AnimationFrames::new(standing_animation)
 }

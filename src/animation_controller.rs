@@ -12,7 +12,7 @@ impl<'a> AnimationController {
     pub fn new(init_animation: AnimationFrames) -> Self {
         AnimationController {
             animation: init_animation,
-            frame_num: Cell::new(0),
+            frame_num: Cell::new(usize::MAX),
         }
     }
 

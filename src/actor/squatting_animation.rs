@@ -6,8 +6,9 @@ use super::{
 };
 
 pub fn squatting_animation() -> AnimationFrames {
-    let standing_pose = ActorPose::new(
-        Point::new(0.0, -30.0),
+    let y = 25.0;
+    let standing_pose = &ActorPose::new(
+        Point::new(0.0, y),
         vec![
             (RIGHT + QUARTER_CLOCKWISE / 3.0).into(),
             (BOTTOM).into(),
@@ -19,8 +20,8 @@ pub fn squatting_animation() -> AnimationFrames {
             (BOTTOM).into(),
         ],
     );
-    let squatting_pose = ActorPose::new(
-        Point::new(0.0, 30.0),
+    let squatting_pose = &ActorPose::new(
+        Point::new(0.0, y * -1.0),
         vec![
             (RIGHT + QUARTER_ANTI_CLOCKWISE / 3.0).into(),
             (TOP_N).into(),
@@ -33,12 +34,7 @@ pub fn squatting_animation() -> AnimationFrames {
         ],
     );
 
-    let mut animation = ActorPose::interpolate(&standing_pose, &squatting_pose, 5);
-    animation.append(&mut ActorPose::interpolate(
-        &squatting_pose,
-        &standing_pose,
-        5,
-    ));
+    let animation = ActorPose::interpolate(&vec![standing_pose, squatting_pose, standing_pose], 21);
 
     AnimationFrames::new(animation)
 }

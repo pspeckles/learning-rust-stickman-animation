@@ -1,7 +1,5 @@
-use std::cell::RefMut;
-
-use super::{actor_pose::ActorPose, skeleton::RenderingParts};
+use super::actor_pose::ActorPose;
 
 pub trait Position {
-    fn into_pose(&mut self, pose: &ActorPose);
+    fn set_position(&mut self, pose: &ActorPose);
 }

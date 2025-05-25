@@ -17,7 +17,7 @@ impl AnimationFrames {
 
     pub fn next_frame(&self, num: &usize) -> (&ActorPose, usize) {
         if *num >= self.frames.len() {
-            (&self.frames[0], 0)
+            (&self.frames[0], 1)
         } else {
             (&self.frames[*num], num + 1)
         }
