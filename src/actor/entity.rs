@@ -10,7 +10,7 @@ use sfml::{
 use crate::animation_controller::AnimationController;
 
 use super::{
-    actor_pose::ActorPose, draw::Draw, geometry::figure_end_y, pose::Pose, position::Position,
+    animation::AnimationFrame, draw::Draw, geometry::figure_end_y, pose::Pose, position::Position,
     squatting_animation::squatting_animation, standing_animation::standing_animation,
 };
 
@@ -72,7 +72,7 @@ impl Skeleton {
 
     pub fn animate(&self) {
         let animation = self.animations.get(self.current_animation.get()).unwrap();
-        self.parts.borrow_mut().set_position(animation.animate());
+        // self.parts.borrow_mut().set_position(animation.animate());
     }
 
     pub fn draw(&self, window: &mut RenderWindow) {
@@ -145,7 +145,7 @@ fn limb_width_from(width: f32) -> f32 {
 }
 
 impl Position for RenderingParts {
-    fn set_position(&mut self, pose: &ActorPose) {
+    fn set_position(&mut self, pose: &AnimationFrame) {
         let skeleton_pose = Pose::new(pose.position_shift, &pose.joints);
         let parts = self;
         let head = &mut parts.head;

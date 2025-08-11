@@ -1,28 +1,20 @@
-use std::cell::Cell;
-
-use crate::actor::{actor_pose::ActorPose, animation::AnimationFrames, position::Position};
-
-#[derive(Debug, Clone)]
-pub struct AnimationController {
-    animation: AnimationFrames,
-    frame_num: Cell<usize>,
-}
-
-impl<'a> AnimationController {
-    pub fn new(init_animation: AnimationFrames) -> Self {
-        AnimationController {
-            animation: init_animation,
-            frame_num: Cell::new(usize::MAX),
-        }
-    }
-
-    pub fn animate(&self) -> &ActorPose {
-        let (frame, next_frame_num) = self.animation.next_frame(&self.frame_num.get());
-        self.frame_num.set(next_frame_num);
-        frame
-    }
-
-    pub fn stop_animation(&mut self) {
-        self.frame_num.set(0);
-    }
-}
+// use crate::actor::{animation::AnimationFrame, animation::AnimationFrames};
+//
+// #[derive(Debug, Clone)]
+// pub struct AnimationController {
+//     animation: AnimationFrames,
+// }
+//
+// impl AnimationController {
+//     pub fn new(animation: AnimationFrames) -> Self {
+//         AnimationController { animation }
+//     }
+//
+//     pub fn animate(&mut self,  dt: &f32) {
+//         self.animation.update(dt)
+//     }
+//
+//     pub fn stop_animation(&mut self) {
+//         todo!("stop_animation unimplemented!()")
+//     }
+// }

@@ -1,15 +1,23 @@
-use std::rc::Rc;
+use std::time::Instant;
 
-use actor::entity::Skeleton;
+use actor::human::Human;
+use component::animation::AnimationState;
+use component::position::{Position, PositionData};
 use sfml::graphics::Color;
 use sfml::graphics::{RenderTarget, RenderWindow};
 use sfml::system::Vector2f;
 use sfml::window::{mouse, Event, Style};
 
 mod actor;
-mod animation_controller;
+// mod animation_controller;
+mod component;
+mod event;
+mod system;
 
 mod ui;
+use event::EventQueue;
+use system::animation::AnimationSystem;
+use system::draw::DrawSystem;
 use ui::buttons::ButtonGroup;
 
 fn main() {
@@ -22,27 +30,36 @@ fn main() {
     .unwrap();
     window.set_vertical_sync_enabled(true);
 
-    let sk = Skeleton::new((300.0, 200.0), 120.0, 2.0);
-    let figure = Rc::new(sk);
+    //
+    let sk = Box::new(Human::new(Position::new(PositionData::new(
+        (300.0, 200.0).into(),
+        120.0.into(),
+        2,
+        2,
+    ))));
+
+    let mut entities = vec![sk];
     let mut main_buttons = ButtonGroup::new();
-    let squat = figure.clone();
     main_buttons.add_button(
         Vector2f::new(10.0, 10.0),
         Vector2f::new(100.0, 40.0),
         "Squat",
-        Box::new(move || squat.set_animation(1)),
+        Box::new(|| println!("squat")), // Box::new(move || squat.set_animation(1)),
     );
 
-    let stand = figure.clone();
     main_buttons.add_button(
         (130.0, 10.0).into(),
         (100.0, 40.0).into(),
         "Stand",
-        Box::new(move || stand.set_animation(0)),
+        Box::new(|| println!("Stand")), // Box::new(move || stand.set_animation(0)),
     );
     //
     // Animation variables
-    let mut frame = 0;
+    let mut dt: u128 = 0;
+    let mut now = Instant::now();
+    let mut events = Box::new(EventQueue::new());
+    let animation_system = AnimationSystem::new(&mut events);
+    let draw_system = DrawSystem::new(&mut events);
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -59,16 +76,28 @@ fn main() {
         }
 
         // Update animation frame
-        frame = (frame + 1) % 60;
-        if frame % 10 == 0 {
-            figure.animate();
+        {
+            let mut animatables: Vec<&mut AnimationState> = vec![];
+            for h in &mut entities {
+                animatables.push(&mut h.animation);
+            }
+            animation_system.apply(&mut events, animatables, &dt);
         }
         // Clear the window
         window.clear(Color::BLACK);
 
         // Draw
-        figure.draw(&mut window);
+        {
+            let mut drawables: Vec<&AnimationState> = vec![];
+            for h in &entities {
+                drawables.push(&h.animation);
+            }
+            draw_system.draw(&mut events, &mut window, drawables);
+        }
+        // figure.draw(&mut window);
         main_buttons.draw(&mut window);
         window.display();
+        dt = now.elapsed().as_millis();
+        now = Instant::now();
     }
 }

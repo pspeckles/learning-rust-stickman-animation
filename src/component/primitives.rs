@@ -1,3 +1,4 @@
+use core::f32;
 use std::ops::Add;
 
 #[derive(Debug, Clone, Copy)]
@@ -21,6 +22,18 @@ impl Into<Rotation> for f32 {
 pub struct Point {
     x: f32,
     y: f32,
+}
+
+impl Into<Point> for (f32, f32) {
+    fn into(self) -> Point {
+        Point::new(self.0, self.1)
+    }
+}
+
+impl Into<(f32, f32)> for Point {
+    fn into(self) -> (f32, f32) {
+        (self.x, self.y)
+    }
 }
 
 impl Point {

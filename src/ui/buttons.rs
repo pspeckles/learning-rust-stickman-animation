@@ -1,9 +1,6 @@
 use sfml::graphics::{Font, RectangleShape, RenderTarget, Shape, Text, Transformable};
 use sfml::system::Vector2f;
 
-use crate::actor::animation::AnimationFrames;
-use crate::animation_controller::AnimationController;
-
 static FONT_PATH: &str = "resources/OpenSans-Regular.ttf";
 // type ButtonClickCallback = fn();
 // type ButtonClickCallback = FnMut();
