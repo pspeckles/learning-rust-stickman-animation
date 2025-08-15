@@ -16,6 +16,7 @@ impl AnimationSystem {
         let mut human_animations = HashMap::new();
 
         human_animations.insert("squatting".to_string(), squatting_animation());
+        human_animations.insert("t_pose".to_string(), AnimationFrames::new(vec![t_pose()]));
 
         AnimationSystem { human_animations }
     }
@@ -31,9 +32,8 @@ impl AnimationSystem {
             .iter()
             .for_each(|s| println!("{:?}", s.name));
         let entity = entities.get_mut(0).unwrap();
-        // let animation = self.human_animations.get("squatting").unwrap();
+        let animation = self.human_animations.get("t_pose").unwrap();
 
-        AnimationFrames::new(vec![t_pose()]).update(entity, dt);
-        // animation.update(entity, dt);
+        animation.update(entity, dt);
     }
 }

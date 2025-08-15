@@ -8,7 +8,7 @@ pub struct AnimationFrames {
     frames: Vec<AnimationFrame>,
 }
 
-const ANIMATION_FRAME_TIME: u128 = 500;
+const ANIMATION_FRAME_TIME: u128 = 50;
 impl AnimationFrames {
     pub fn new(frames: Vec<AnimationFrame>) -> AnimationFrames {
         AnimationFrames { frames }
