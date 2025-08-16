@@ -20,10 +20,6 @@ impl Human {
 }
 
 impl AnimationComponent for Human {
-    fn get_animation_state(&self) -> &AnimationState {
-        &self.animation
-    }
-
     fn get_animation_state_mut(&mut self) -> &mut AnimationState {
         &mut self.animation
     }

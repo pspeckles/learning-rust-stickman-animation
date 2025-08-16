@@ -1,7 +1,6 @@
 use crate::actor::animation::AnimationFrame;
 
 pub trait AnimationComponent {
-    fn get_animation_state(&self) -> &AnimationState;
     fn get_animation_state_mut(&mut self) -> &mut AnimationState;
 }
 

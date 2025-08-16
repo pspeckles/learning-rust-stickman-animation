@@ -4,9 +4,8 @@ use sfml::graphics::{
 use sfml::system::Vector2;
 
 use crate::component::draw::DrawComponent;
-use crate::component::graph::Graph;
 use crate::{
-    component::{animation::AnimationState, position::PositionData},
+    component::position::PositionData,
     event::{EventNames, EventQueue},
 };
 

@@ -26,16 +26,19 @@ impl AnimationFrames {
 
         let last_frame = entity.current();
         let last_frame_time = entity.current_frame_time();
-        if dt + last_frame_time < ANIMATION_FRAME_TIME {
-            entity.set_current_frame_time(dt + last_frame_time);
+        let mut time_passed = *dt;
+        let skip_animation =
+            (time_passed + (last_frame_time % ANIMATION_FRAME_TIME)) < ANIMATION_FRAME_TIME;
+
+        if skip_animation {
+            entity.set_current_frame_time(time_passed + last_frame_time);
             return;
         }
 
         // fast forward to the latest frame based on dt
-        let mut time_passed = *dt;
         let mut animation_time = last_frame.duration_ms;
         while entity.current_frame_time() + time_passed > animation_time {
-            time_passed -= animation_time - entity.current_frame_time();
+            time_passed = (entity.current_frame_time() + time_passed) - animation_time;
             entity.set_current_frame_time(0);
             entity.set_current_key_frame(entity.next_key_frame());
             if entity.next_key_frame() + 1 >= self.frames.len() {
@@ -76,10 +79,6 @@ impl AnimationFrame {
             panic!("Animation duration cannot be smaller than {ANIMATION_FRAME_TIME}");
         }
         AnimationFrame { pose, duration_ms }
-    }
-
-    pub fn get_positions(&self) -> Vec<PositionData> {
-        self.pose.entries().iter().map(|node| *node.get()).collect()
     }
 
     pub fn interpolate(from: &AnimationFrame, to: &AnimationFrame, q: f32) -> Box<AnimationFrame> {

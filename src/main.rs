@@ -1,9 +1,8 @@
 use std::time::Instant;
 
 use actor::human::Human;
-use component::animation::{AnimationComponent, AnimationState};
+use component::animation::AnimationComponent;
 use component::draw::DrawComponent;
-use component::graph::Graph;
 use component::position::{Position, PositionData};
 use sfml::graphics::Color;
 use sfml::graphics::{RenderTarget, RenderWindow};

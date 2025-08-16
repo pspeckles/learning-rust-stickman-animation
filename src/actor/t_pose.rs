@@ -10,8 +10,7 @@ pub const N: f32 = 180.0;
 pub const E: f32 = 270.0;
 pub const W: f32 = 90.0;
 pub const S: f32 = 0.0;
-pub const QUARTER_CLOCKWISE: f32 = 90.0;
-pub const QUARTER_ANTI_CLOCKWISE: f32 = -90.0;
+pub const QUARTER: f32 = 90.0;
 
 pub const LIMB_WIDTH: f32 = 20.0;
 pub const LIMB_HEIGHT: f32 = 60.0;

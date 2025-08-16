@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::{
     actor::{animation::AnimationFrames, squatting_animation::squatting_animation, t_pose::t_pose},
-    component::animation::{AnimationComponent, AnimationState},
+    component::animation::AnimationComponent,
     event::EventQueue,
 };
 

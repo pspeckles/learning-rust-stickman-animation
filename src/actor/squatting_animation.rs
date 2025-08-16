@@ -1,8 +1,8 @@
-use crate::component::{graph::Graph, position::PositionData, primitives::Point};
+use crate::component::{graph::Graph, position::PositionData};
 
 use super::{
     animation::{AnimationFrame, AnimationFrames},
-    t_pose::{t_pose, E, N, QUARTER_ANTI_CLOCKWISE, QUARTER_CLOCKWISE, S, W},
+    t_pose::{t_pose, E, N, QUARTER, S, W},
 };
 
 pub fn squatting_animation() -> AnimationFrames {
@@ -13,7 +13,7 @@ pub fn squatting_animation() -> AnimationFrames {
         //root
         if node_idx == 0 {
             let mut u = *node.get();
-            u.point = (300.0, 200.0).into();
+            u.point = (300.0, 250.0).into();
             node.set(u);
             continue;
         }
@@ -21,7 +21,7 @@ pub fn squatting_animation() -> AnimationFrames {
         if node_idx == 4 {
             node.set(PositionData::new(
                 node.get().point,
-                (W + QUARTER_ANTI_CLOCKWISE / 3.0).into(),
+                (W - QUARTER / 2.0).into(),
                 node.get().width,
                 node.get().height,
             ));
@@ -31,27 +31,27 @@ pub fn squatting_animation() -> AnimationFrames {
         if node_idx == 5 {
             node.set(PositionData::new(
                 node.get().point,
-                (E + QUARTER_CLOCKWISE / 3.0).into(),
+                (S + QUARTER / 3.0).into(),
                 node.get().width,
                 node.get().height,
             ));
             continue;
         }
-        // right_lower_hand
-        if node_idx == 7 {
+        // left_upper_hand
+        if node_idx == 6 {
             node.set(PositionData::new(
                 node.get().point,
-                N.into(),
+                (E + QUARTER / 2.0).into(),
                 node.get().width,
                 node.get().height,
             ));
             continue;
         }
         // left_lower_hand
-        if node_idx == 8 {
+        if node_idx == 7 {
             node.set(PositionData::new(
                 node.get().point,
-                N.into(),
+                (S - QUARTER / 3.0).into(),
                 node.get().width,
                 node.get().height,
             ));
@@ -61,27 +61,28 @@ pub fn squatting_animation() -> AnimationFrames {
         if node_idx == 9 {
             node.set(PositionData::new(
                 node.get().point,
-                (W + QUARTER_ANTI_CLOCKWISE / 3.0).into(),
+                (W - QUARTER / 2.0).into(),
+                node.get().width,
+                node.get().height,
+            ));
+            continue;
+        }
+
+        // right_lower_leg
+        if node_idx == 10 {
+            node.set(PositionData::new(
+                node.get().point,
+                S.into(),
                 node.get().width,
                 node.get().height,
             ));
             continue;
         }
         // left_upper_leg
-        if node_idx == 10 {
-            node.set(PositionData::new(
-                node.get().point,
-                (E + QUARTER_CLOCKWISE / 3.0).into(),
-                node.get().width,
-                node.get().height,
-            ));
-            continue;
-        }
-        // right_lower_leg
         if node_idx == 11 {
             node.set(PositionData::new(
                 node.get().point,
-                S.into(),
+                (E + QUARTER / 2.0).into(),
                 node.get().width,
                 node.get().height,
             ));
@@ -103,19 +104,16 @@ pub fn squatting_animation() -> AnimationFrames {
         let node_idx = node.node_id().idx;
         //root
         if node_idx == 0 {
-            node.set(PositionData::new(
-                Point::new(300.0, 250.0),
-                0.0.into(),
-                node.get().width,
-                node.get().height,
-            ));
+            let mut u = *node.get();
+            u.point = (300.0, 320.0).into();
+            node.set(u);
             continue;
         }
         // right_upper_hand
         if node_idx == 4 {
             node.set(PositionData::new(
                 node.get().point,
-                (W + QUARTER_ANTI_CLOCKWISE / 3.0).into(),
+                (W + QUARTER).into(),
                 node.get().width,
                 node.get().height,
             ));
@@ -125,27 +123,27 @@ pub fn squatting_animation() -> AnimationFrames {
         if node_idx == 5 {
             node.set(PositionData::new(
                 node.get().point,
-                (E - QUARTER_CLOCKWISE / 3.0).into(),
+                (N).into(),
                 node.get().width,
                 node.get().height,
             ));
             continue;
         }
-        // right_lower_hand
-        if node_idx == 7 {
+        // left_upper_hand
+        if node_idx == 6 {
             node.set(PositionData::new(
                 node.get().point,
-                E.into(),
+                (E - QUARTER).into(),
                 node.get().width,
                 node.get().height,
             ));
             continue;
         }
         // left_lower_hand
-        if node_idx == 8 {
+        if node_idx == 7 {
             node.set(PositionData::new(
                 node.get().point,
-                N.into(),
+                (-N).into(),
                 node.get().width,
                 node.get().height,
             ));
@@ -155,27 +153,28 @@ pub fn squatting_animation() -> AnimationFrames {
         if node_idx == 9 {
             node.set(PositionData::new(
                 node.get().point,
-                (W - QUARTER_ANTI_CLOCKWISE / 3.0).into(),
+                (W + QUARTER / 3.0).into(),
+                node.get().width,
+                node.get().height,
+            ));
+            continue;
+        }
+
+        // right_lower_leg
+        if node_idx == 10 {
+            node.set(PositionData::new(
+                node.get().point,
+                S.into(),
                 node.get().width,
                 node.get().height,
             ));
             continue;
         }
         // left_upper_leg
-        if node_idx == 10 {
-            node.set(PositionData::new(
-                node.get().point,
-                (E - QUARTER_CLOCKWISE / 3.0).into(),
-                node.get().width,
-                node.get().height,
-            ));
-            continue;
-        }
-        // right_lower_leg
         if node_idx == 11 {
             node.set(PositionData::new(
                 node.get().point,
-                S.into(),
+                (E - QUARTER / 3.0).into(),
                 node.get().width,
                 node.get().height,
             ));
