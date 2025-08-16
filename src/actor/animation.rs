@@ -8,40 +8,42 @@ pub struct AnimationFrames {
     frames: Vec<AnimationFrame>,
 }
 
-const ANIMATION_FRAME_TIME: u128 = 50;
+const ANIMATION_FRAME_TIME: u128 = 20;
 impl AnimationFrames {
     pub fn new(frames: Vec<AnimationFrame>) -> AnimationFrames {
         AnimationFrames { frames }
     }
 
     pub fn update(&self, entity: &mut AnimationState, dt: &u128) {
-        if entity.last_frame().duration_ms == 0 {
-            if *entity.next_key_frame() >= self.frames.len() {
+        if entity.current().duration_ms == 0 {
+            if entity.next_key_frame() >= self.frames.len() {
                 entity.set_next_key_frame(0);
             } else {
                 entity.set_next_key_frame(entity.next_key_frame() + 1);
             }
             return;
         }
-        let last_frame = entity.last_frame();
-        let last_frame_time = entity.last_frame_time();
+
+        let last_frame = entity.current();
+        let last_frame_time = entity.current_frame_time();
         if dt + last_frame_time < ANIMATION_FRAME_TIME {
-            entity.set_last_frame_time(dt + last_frame_time);
+            entity.set_current_frame_time(dt + last_frame_time);
             return;
         }
 
         // fast forward to the latest frame based on dt
         let mut time_passed = *dt;
         let mut animation_time = last_frame.duration_ms;
-        while entity.last_frame_time() + time_passed > animation_time {
-            time_passed -= animation_time - entity.last_frame_time();
-            entity.set_last_frame_time(0);
-            if *entity.next_key_frame() + 1 >= self.frames.len() {
+        while entity.current_frame_time() + time_passed > animation_time {
+            time_passed -= animation_time - entity.current_frame_time();
+            entity.set_current_frame_time(0);
+            entity.set_current_key_frame(entity.next_key_frame());
+            if entity.next_key_frame() + 1 >= self.frames.len() {
                 entity.set_next_key_frame(0);
             } else {
                 entity.set_next_key_frame(entity.next_key_frame() + 1);
             }
-            animation_time = self.frames[*entity.next_key_frame()].duration_ms;
+            animation_time = self.frames[entity.current_key_frame()].duration_ms;
             // push into animation ring buffer to draw next time
             // skipped in this implementation as animation system is simple and we don't expect
             // one frame will take longer than animation frequence to draw
@@ -49,12 +51,16 @@ impl AnimationFrames {
         // we don't need the calcualtion of how many animation cycles is in
         // time_passed, we can adjust q to keep things simple
 
-        let q = (entity.last_frame_time() + time_passed) as f32 / (last_frame.duration_ms as f32);
-        let interpolated_frame =
-            AnimationFrame::interpolate(&last_frame, &self.frames[*entity.next_key_frame()], q);
+        let q =
+            (entity.current_frame_time() + time_passed) as f32 / (last_frame.duration_ms as f32);
+        let interpolated_frame = AnimationFrame::interpolate(
+            &self.frames[entity.current_key_frame()],
+            &self.frames[entity.next_key_frame()],
+            q,
+        );
 
-        entity.set_last_frame_time(entity.last_frame_time() + time_passed);
-        entity.set_last_frame(interpolated_frame.clone());
+        entity.set_current_frame_time(entity.current_frame_time() + time_passed);
+        entity.set_current(interpolated_frame.clone());
     }
 }
 
@@ -71,6 +77,11 @@ impl AnimationFrame {
         }
         AnimationFrame { pose, duration_ms }
     }
+
+    pub fn get_positions(&self) -> Vec<PositionData> {
+        self.pose.entries().iter().map(|node| *node.get()).collect()
+    }
+
     pub fn interpolate(from: &AnimationFrame, to: &AnimationFrame, q: f32) -> Box<AnimationFrame> {
         let mut interim_pose = Graph::copy_graph(&from.pose);
         let target_pose = &to.pose;

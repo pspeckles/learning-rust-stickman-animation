@@ -1,9 +1,9 @@
 use super::{
-    geometry::{figure_end_x, figure_end_y},
+    geometry::figure_end_x,
     primitives::{Point, Rotation},
 };
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct PositionData {
     pub point: Point,
     pub angle: Rotation,

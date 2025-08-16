@@ -1,7 +1,9 @@
 use std::time::Instant;
 
 use actor::human::Human;
-use component::animation::AnimationState;
+use component::animation::{AnimationComponent, AnimationState};
+use component::draw::DrawComponent;
+use component::graph::Graph;
 use component::position::{Position, PositionData};
 use sfml::graphics::Color;
 use sfml::graphics::{RenderTarget, RenderWindow};
@@ -31,12 +33,12 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
     //
-    let sk = Box::new(Human::new(Position::new(PositionData::new(
+    let sk = Human::new(Position::new(PositionData::new(
         (300.0, 200.0).into(),
         120.0.into(),
         2,
         2,
-    ))));
+    )));
 
     let mut entities = vec![sk];
     let mut main_buttons = ButtonGroup::new();
@@ -77,9 +79,9 @@ fn main() {
 
         // Update animation frame
         {
-            let mut animatables: Vec<&mut AnimationState> = vec![];
+            let mut animatables: Vec<&mut dyn AnimationComponent> = vec![];
             for h in &mut entities {
-                animatables.push(&mut h.animation);
+                animatables.push(h as &mut dyn AnimationComponent);
             }
             animation_system.apply(&mut events, animatables, &dt);
         }
@@ -88,11 +90,14 @@ fn main() {
 
         // Draw
         {
-            let mut drawables: Vec<&AnimationState> = vec![];
-            for h in &entities {
-                drawables.push(&h.animation);
-            }
-            draw_system.draw(&mut events, &mut window, drawables);
+            draw_system.draw(
+                &mut events,
+                &mut window,
+                entities
+                    .iter()
+                    .map(|e| e as &dyn DrawComponent)
+                    .collect::<Vec<&dyn DrawComponent>>(),
+            );
         }
         // figure.draw(&mut window);
         main_buttons.draw(&mut window);

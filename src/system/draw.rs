@@ -1,11 +1,10 @@
-use std::f32::consts::PI;
-use std::ops::Rem;
-
 use sfml::graphics::{
     Color, Drawable, RectangleShape, RenderTarget, RenderWindow, Shape, Transformable,
 };
 use sfml::system::Vector2;
 
+use crate::component::draw::DrawComponent;
+use crate::component::graph::Graph;
 use crate::{
     component::{animation::AnimationState, position::PositionData},
     event::{EventNames, EventQueue},
@@ -25,14 +24,18 @@ impl DrawSystem {
         &self,
         event_queue: &mut Box<EventQueue>,
         render_target: &mut RenderWindow,
-        entities: Vec<&AnimationState>,
+        entities: Vec<&dyn DrawComponent>,
     ) {
         for entity in entities {
-            entity.last_frame().pose.traverse().iter().for_each(|node| {
-                let obj = &DrawSystem::to_drawable(node.get());
-                render_target.draw(obj);
-                render_target.draw(&DrawSystem::to_joint(node.get()));
-            })
+            entity
+                .get_drawables()
+                .into_boxed_slice()
+                .iter()
+                .for_each(|drawable| {
+                    let obj = &DrawSystem::to_drawable(&drawable.position);
+                    render_target.draw(obj);
+                    render_target.draw(&DrawSystem::to_joint(&drawable.position));
+                })
         }
         for elem in event_queue.poll(EVENT_QUEUE_NAME) {
             if elem.name == EventNames::About {

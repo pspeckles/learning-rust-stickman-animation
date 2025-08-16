@@ -50,12 +50,12 @@ impl<T: Clone> Graph<T> {
     // BFS traversal of the graph
     pub fn traverse(&self) -> Vec<&Node<T>> {
         let mut queue = VecDeque::new();
-        if self.entries.len() == 0 {
+        if self.entries.is_empty() {
             return vec![];
         }
 
         let entries = self.entries();
-        let root = entries.get(0).unwrap();
+        let root = entries.first().unwrap();
         queue.push_back(root);
         let mut traversed = Vec::new();
         while !queue.is_empty() {
@@ -120,7 +120,7 @@ impl<T: Clone> Node<T> {
 
     pub fn append_children(&mut self, children: Vec<NodeId>) {
         for c in children {
-            self.append_child(c.into())
+            self.append_child(c)
         }
     }
 
