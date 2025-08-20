@@ -33,39 +33,41 @@ pub fn t_pose_with_handles() -> (AnimationFrame, SkeletonHandles) {
         TORSO_HEIGHT as u16,
         0,
     );
+    // Side-scroller style: front (right) arm slightly forward and down
     let right_upper_hand_p = PositionData::new(
-        Point::new(TORSO_WIDTH / 3.0, -TORSO_HEIGHT),
-        (E + QUARTER / 3.0).into(),
+        Point::new(TORSO_WIDTH / 2.0, -TORSO_HEIGHT * 0.85),
+        (E + QUARTER / 8.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         1,
     );
     let right_lower_hand_p = PositionData::new(
         Point::new(0.0, 0.0),
-        (E + QUARTER / 3.0).into(),
+        (E + QUARTER / 8.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         1,
     );
+    // Back (left) arm slightly forward and up
     let left_upper_hand_p = PositionData::new(
-        Point::new(TORSO_WIDTH / 2.0, -TORSO_HEIGHT),
-        (E - QUARTER / 3.0).into(),
-        // E.into(),
+        Point::new(TORSO_WIDTH / 2.0, -TORSO_HEIGHT * 0.85),
+        (E - QUARTER / 8.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         -1,
     );
     let left_lower_hand_p = PositionData::new(
         Point::new(0.0, 0.0),
-        (E - QUARTER / 3.0).into(),
+        (E - QUARTER / 8.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         -1,
     );
     let lower_back_p = PositionData::new(Point::new(0.0, 0.0), S.into(), 0, 0, 0);
+    // Legs anchored near bottom of torso; front leg slightly forward
     let right_upper_leg_p = PositionData::new(
-        Point::new(-TORSO_WIDTH / 2.0, 0.0),
-        S.into(),
+        Point::new(TORSO_WIDTH / 4.0, 0.0),
+        (S - QUARTER / 16.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         1,
@@ -77,9 +79,10 @@ pub fn t_pose_with_handles() -> (AnimationFrame, SkeletonHandles) {
         LIMB_HEIGHT as u16,
         1,
     );
+    // Back leg slightly backward
     let left_upper_leg_p = PositionData::new(
-        Point::new(TORSO_WIDTH / 2.0, 0.0),
-        S.into(),
+        Point::new(-TORSO_WIDTH / 4.0, 0.0),
+        (S + QUARTER / 16.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         -1,
