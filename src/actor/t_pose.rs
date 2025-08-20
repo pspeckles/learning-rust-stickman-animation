@@ -5,6 +5,7 @@ use crate::component::{
 };
 
 use super::animation::AnimationFrame;
+use super::skeleton::{BodyPart, SkeletonHandles};
 
 pub const N: f32 = 180.0;
 pub const E: f32 = 270.0;
@@ -17,7 +18,7 @@ pub const LIMB_HEIGHT: f32 = 60.0;
 pub const TORSO_HEIGHT: f32 = 150.0;
 pub const TORSO_WIDTH: f32 = 30.0;
 
-pub fn t_pose() -> AnimationFrame {
+pub fn t_pose_with_handles() -> (AnimationFrame, SkeletonHandles) {
     // z-index convention:
     // left-side parts: -1 (behind torso)
     // torso, head, neck, spine: 0
@@ -119,6 +120,7 @@ pub fn t_pose() -> AnimationFrame {
         right_upper_hand,
         lower_back,
     ]);
+
     standing_pose
         .get_mut(right_upper_hand)
         .append_child(right_lower_hand);
@@ -135,7 +137,26 @@ pub fn t_pose() -> AnimationFrame {
         .get_mut(left_upper_leg)
         .append_child(left_lower_leg);
 
-    AnimationFrame::new(standing_pose, 20)
+    let mut handles = SkeletonHandles::new();
+    handles.set(BodyPart::Root, standing);
+    handles.set(BodyPart::Head, head);
+    handles.set(BodyPart::Neck, neck);
+    handles.set(BodyPart::Torso, torso);
+    handles.set(BodyPart::RightUpperArm, right_upper_hand);
+    handles.set(BodyPart::RightLowerArm, right_lower_hand);
+    handles.set(BodyPart::LeftUpperArm, left_upper_hand);
+    handles.set(BodyPart::LeftLowerArm, left_lower_hand);
+    handles.set(BodyPart::LowerBack, lower_back);
+    handles.set(BodyPart::RightUpperLeg, right_upper_leg);
+    handles.set(BodyPart::RightLowerLeg, right_lower_leg);
+    handles.set(BodyPart::LeftUpperLeg, left_upper_leg);
+    handles.set(BodyPart::LeftLowerLeg, left_lower_leg);
+
+    (AnimationFrame::new(standing_pose, 20), handles)
+}
+
+pub fn t_pose() -> AnimationFrame {
+    t_pose_with_handles().0
 }
 
 #[cfg(test)]

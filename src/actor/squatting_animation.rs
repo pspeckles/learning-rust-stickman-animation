@@ -2,214 +2,163 @@ use crate::component::{graph::Graph, position::PositionData};
 
 use super::{
     animation::{AnimationFrame, AnimationFrames},
-    t_pose::{t_pose, E, N, QUARTER, S, W},
+    skeleton::PoseView,
+    t_pose::{t_pose_with_handles, E, N, QUARTER, S, W},
 };
 
 pub fn squatting_animation() -> AnimationFrames {
-    let base = t_pose().pose;
+    let (base_frame, handles) = t_pose_with_handles();
+    let base = base_frame.pose;
+
     let mut standing_pose = Graph::copy_graph(&base);
-    for node in standing_pose.entries_mut().iter_mut() {
-        let node_idx = node.node_id().idx;
-        //root
-        if node_idx == 0 {
-            let mut u = *node.get();
-            u.point = (node.get().point.x(), 245.0).into();
-            node.set(u);
-            continue;
-        }
-        // right_upper_hand
-        if node_idx == 4 {
-            node.set(PositionData::new(
-                node.get().point,
-                (W - QUARTER / 2.0).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // right_lower_hand
-        if node_idx == 5 {
-            node.set(PositionData::new(
-                node.get().point,
-                (S + QUARTER / 3.0).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // left_upper_hand
-        if node_idx == 6 {
-            node.set(PositionData::new(
-                node.get().point,
-                (E + QUARTER / 2.0).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // left_lower_hand
-        if node_idx == 7 {
-            node.set(PositionData::new(
-                node.get().point,
-                (S - QUARTER / 3.0).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // right_upper_leg
-        if node_idx == 9 {
-            node.set(PositionData::new(
-                node.get().point,
-                (W - QUARTER / 1.2).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-
-        // right_lower_leg
-        if node_idx == 10 {
-            node.set(PositionData::new(
-                node.get().point,
-                S.into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // left_upper_leg
-        if node_idx == 11 {
-            node.set(PositionData::new(
-                node.get().point,
-                (E + QUARTER / 1.2).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // left_lower_leg
-        if node_idx == 12 {
-            node.set(PositionData::new(
-                node.get().point,
-                S.into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
+    {
+        let mut view = PoseView::new(&mut standing_pose, &handles);
+        let mut r = *view.root_mut().get();
+        r.point = (r.point.x(), 245.0).into();
+        view.root_mut().set(r);
+        let ru = *view.right_upper_arm_mut().get();
+        view.right_upper_arm_mut().set(PositionData::new(
+            ru.point,
+            (W - QUARTER / 2.0).into(),
+            ru.width,
+            ru.height,
+            ru.z,
+        ));
+        let rl = *view.right_lower_arm_mut().get();
+        view.right_lower_arm_mut().set(PositionData::new(
+            rl.point,
+            (S + QUARTER / 3.0).into(),
+            rl.width,
+            rl.height,
+            rl.z,
+        ));
+        let lu = *view.left_upper_arm_mut().get();
+        view.left_upper_arm_mut().set(PositionData::new(
+            lu.point,
+            (E + QUARTER / 2.0).into(),
+            lu.width,
+            lu.height,
+            lu.z,
+        ));
+        let ll = *view.left_lower_arm_mut().get();
+        view.left_lower_arm_mut().set(PositionData::new(
+            ll.point,
+            (S - QUARTER / 3.0).into(),
+            ll.width,
+            ll.height,
+            ll.z,
+        ));
+        let rul = *view.right_upper_leg_mut().get();
+        view.right_upper_leg_mut().set(PositionData::new(
+            rul.point,
+            (W - QUARTER / 1.2).into(),
+            rul.width,
+            rul.height,
+            rul.z,
+        ));
+        let rll = *view.right_lower_leg_mut().get();
+        view.right_lower_leg_mut().set(PositionData::new(
+            rll.point,
+            S.into(),
+            rll.width,
+            rll.height,
+            rll.z,
+        ));
+        let lul = *view.left_upper_leg_mut().get();
+        view.left_upper_leg_mut().set(PositionData::new(
+            lul.point,
+            (E + QUARTER / 1.2).into(),
+            lul.width,
+            lul.height,
+            lul.z,
+        ));
+        let lll = *view.left_lower_leg_mut().get();
+        view.left_lower_leg_mut().set(PositionData::new(
+            lll.point,
+            S.into(),
+            lll.width,
+            lll.height,
+            lll.z,
+        ));
     }
-    let mut squatting_pose = Graph::copy_graph(&base);
-    for node in squatting_pose.entries_mut().iter_mut() {
-        let node_idx = node.node_id().idx;
-        //root
-        if node_idx == 0 {
-            node.set(PositionData::new(
-                (node.get().point.x(), 325.0).into(),
-                node.get().angle,
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // right_upper_hand
-        if node_idx == 4 {
-            node.set(PositionData::new(
-                node.get().point,
-                (W + QUARTER).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // right_lower_hand
-        if node_idx == 5 {
-            node.set(PositionData::new(
-                node.get().point,
-                (N).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // left_upper_hand
-        if node_idx == 6 {
-            node.set(PositionData::new(
-                node.get().point,
-                (E - QUARTER).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // left_lower_hand
-        if node_idx == 7 {
-            node.set(PositionData::new(
-                node.get().point,
-                (-N).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // right_upper_leg
-        if node_idx == 9 {
-            node.set(PositionData::new(
-                node.get().point,
-                (W + QUARTER / 3.0).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
 
-        // right_lower_leg
-        if node_idx == 10 {
-            node.set(PositionData::new(
-                node.get().point,
-                S.into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // left_upper_leg
-        if node_idx == 11 {
-            node.set(PositionData::new(
-                node.get().point,
-                (E - QUARTER / 3.0).into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
-        // left_lower_leg
-        if node_idx == 12 {
-            node.set(PositionData::new(
-                node.get().point,
-                S.into(),
-                node.get().width,
-                node.get().height,
-                node.get().z,
-            ));
-            continue;
-        }
+    let mut squatting_pose = Graph::copy_graph(&base);
+    {
+        let mut view = PoseView::new(&mut squatting_pose, &handles);
+        let r = *view.root_mut().get();
+        view.root_mut().set(PositionData::new(
+            (r.point.x(), 325.0).into(),
+            r.angle,
+            r.width,
+            r.height,
+            r.z,
+        ));
+        // arms
+        let ru = *view.right_upper_arm_mut().get();
+        view.right_upper_arm_mut().set(PositionData::new(
+            ru.point,
+            (W + QUARTER).into(),
+            ru.width,
+            ru.height,
+            ru.z,
+        ));
+        let rl = *view.right_lower_arm_mut().get();
+        view.right_lower_arm_mut().set(PositionData::new(
+            rl.point,
+            (N).into(),
+            rl.width,
+            rl.height,
+            rl.z,
+        ));
+        let lu = *view.left_upper_arm_mut().get();
+        view.left_upper_arm_mut().set(PositionData::new(
+            lu.point,
+            (E - QUARTER).into(),
+            lu.width,
+            lu.height,
+            lu.z,
+        ));
+        let ll = *view.left_lower_arm_mut().get();
+        view.left_lower_arm_mut().set(PositionData::new(
+            ll.point,
+            (-N).into(),
+            ll.width,
+            ll.height,
+            ll.z,
+        ));
+        // legs
+        let rul = *view.right_upper_leg_mut().get();
+        view.right_upper_leg_mut().set(PositionData::new(
+            rul.point,
+            (W + QUARTER / 3.0).into(),
+            rul.width,
+            rul.height,
+            rul.z,
+        ));
+        let rll = *view.right_lower_leg_mut().get();
+        view.right_lower_leg_mut().set(PositionData::new(
+            rll.point,
+            S.into(),
+            rll.width,
+            rll.height,
+            rll.z,
+        ));
+        let lul = *view.left_upper_leg_mut().get();
+        view.left_upper_leg_mut().set(PositionData::new(
+            lul.point,
+            (E - QUARTER / 3.0).into(),
+            lul.width,
+            lul.height,
+            lul.z,
+        ));
+        let lll = *view.left_lower_leg_mut().get();
+        view.left_lower_leg_mut().set(PositionData::new(
+            lll.point,
+            S.into(),
+            lll.width,
+            lll.height,
+            lll.z,
+        ));
     }
 
     let standing_pose_animation = AnimationFrame::new(standing_pose, 1000);
