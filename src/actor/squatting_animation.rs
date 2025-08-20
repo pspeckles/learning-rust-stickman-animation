@@ -1,4 +1,5 @@
-use crate::component::{graph::Graph, position::PositionData};
+use crate::component::graph::Graph;
+use crate::component::position::PositionNode;
 
 use super::{
     animation::{AnimationFrame, AnimationFrames},
@@ -13,152 +14,41 @@ pub fn squatting_animation() -> AnimationFrames {
     let mut standing_pose = Graph::copy_graph(&base);
     {
         let mut view = PoseView::new(&mut standing_pose, &handles);
-        let mut r = *view.root_mut().get();
-        r.point = (r.point.x(), 245.0).into();
-        view.root_mut().set(r);
-        let ru = *view.right_upper_arm_mut().get();
-        view.right_upper_arm_mut().set(PositionData::new(
-            ru.point,
-            (W - QUARTER / 2.0).into(),
-            ru.width,
-            ru.height,
-            ru.z,
-        ));
-        let rl = *view.right_lower_arm_mut().get();
-        view.right_lower_arm_mut().set(PositionData::new(
-            rl.point,
-            (S + QUARTER / 3.0).into(),
-            rl.width,
-            rl.height,
-            rl.z,
-        ));
-        let lu = *view.left_upper_arm_mut().get();
-        view.left_upper_arm_mut().set(PositionData::new(
-            lu.point,
-            (E + QUARTER / 2.0).into(),
-            lu.width,
-            lu.height,
-            lu.z,
-        ));
-        let ll = *view.left_lower_arm_mut().get();
-        view.left_lower_arm_mut().set(PositionData::new(
-            ll.point,
-            (S - QUARTER / 3.0).into(),
-            ll.width,
-            ll.height,
-            ll.z,
-        ));
-        let rul = *view.right_upper_leg_mut().get();
-        view.right_upper_leg_mut().set(PositionData::new(
-            rul.point,
-            (W - QUARTER / 1.2).into(),
-            rul.width,
-            rul.height,
-            rul.z,
-        ));
-        let rll = *view.right_lower_leg_mut().get();
-        view.right_lower_leg_mut().set(PositionData::new(
-            rll.point,
-            S.into(),
-            rll.width,
-            rll.height,
-            rll.z,
-        ));
-        let lul = *view.left_upper_leg_mut().get();
-        view.left_upper_leg_mut().set(PositionData::new(
-            lul.point,
-            (E + QUARTER / 1.2).into(),
-            lul.width,
-            lul.height,
-            lul.z,
-        ));
-        let lll = *view.left_lower_leg_mut().get();
-        view.left_lower_leg_mut().set(PositionData::new(
-            lll.point,
-            S.into(),
-            lll.width,
-            lll.height,
-            lll.z,
-        ));
+        let r = *view.root_mut().get();
+        view.root_mut().set_point((r.point.x(), 245.0).into());
+        view.right_upper_arm_mut()
+            .set_angle((W - QUARTER / 2.0).into());
+        view.right_lower_arm_mut()
+            .set_angle((S + QUARTER / 3.0).into());
+        view.left_upper_arm_mut()
+            .set_angle((E + QUARTER / 2.0).into());
+        view.left_lower_arm_mut()
+            .set_angle((S - QUARTER / 3.0).into());
+        view.right_upper_leg_mut()
+            .set_angle((W - QUARTER / 1.2).into());
+        view.right_lower_leg_mut().set_angle(S.into());
+        view.left_upper_leg_mut()
+            .set_angle((E + QUARTER / 1.2).into());
+        view.left_lower_leg_mut().set_angle(S.into());
     }
 
     let mut squatting_pose = Graph::copy_graph(&base);
     {
         let mut view = PoseView::new(&mut squatting_pose, &handles);
         let r = *view.root_mut().get();
-        view.root_mut().set(PositionData::new(
-            (r.point.x(), 325.0).into(),
-            r.angle,
-            r.width,
-            r.height,
-            r.z,
-        ));
+        view.root_mut().set_point((r.point.x(), 325.0).into());
         // arms
-        let ru = *view.right_upper_arm_mut().get();
-        view.right_upper_arm_mut().set(PositionData::new(
-            ru.point,
-            (W + QUARTER).into(),
-            ru.width,
-            ru.height,
-            ru.z,
-        ));
-        let rl = *view.right_lower_arm_mut().get();
-        view.right_lower_arm_mut().set(PositionData::new(
-            rl.point,
-            (N).into(),
-            rl.width,
-            rl.height,
-            rl.z,
-        ));
-        let lu = *view.left_upper_arm_mut().get();
-        view.left_upper_arm_mut().set(PositionData::new(
-            lu.point,
-            (E - QUARTER).into(),
-            lu.width,
-            lu.height,
-            lu.z,
-        ));
-        let ll = *view.left_lower_arm_mut().get();
-        view.left_lower_arm_mut().set(PositionData::new(
-            ll.point,
-            (-N).into(),
-            ll.width,
-            ll.height,
-            ll.z,
-        ));
+        view.right_upper_arm_mut().set_angle((W + QUARTER).into());
+        view.right_lower_arm_mut().set_angle((N).into());
+        view.left_upper_arm_mut().set_angle((E - QUARTER).into());
+        view.left_lower_arm_mut().set_angle((-N).into());
         // legs
-        let rul = *view.right_upper_leg_mut().get();
-        view.right_upper_leg_mut().set(PositionData::new(
-            rul.point,
-            (W + QUARTER / 3.0).into(),
-            rul.width,
-            rul.height,
-            rul.z,
-        ));
-        let rll = *view.right_lower_leg_mut().get();
-        view.right_lower_leg_mut().set(PositionData::new(
-            rll.point,
-            S.into(),
-            rll.width,
-            rll.height,
-            rll.z,
-        ));
-        let lul = *view.left_upper_leg_mut().get();
-        view.left_upper_leg_mut().set(PositionData::new(
-            lul.point,
-            (E - QUARTER / 3.0).into(),
-            lul.width,
-            lul.height,
-            lul.z,
-        ));
-        let lll = *view.left_lower_leg_mut().get();
-        view.left_lower_leg_mut().set(PositionData::new(
-            lll.point,
-            S.into(),
-            lll.width,
-            lll.height,
-            lll.z,
-        ));
+        view.right_upper_leg_mut()
+            .set_angle((W + QUARTER / 3.0).into());
+        view.right_lower_leg_mut().set_angle(S.into());
+        view.left_upper_leg_mut()
+            .set_angle((E - QUARTER / 3.0).into());
+        view.left_lower_leg_mut().set_angle(S.into());
     }
 
     let standing_pose_animation = AnimationFrame::new(standing_pose, 1000);
