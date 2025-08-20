@@ -12,9 +12,9 @@ impl Rotation {
     }
 }
 
-impl Into<Rotation> for f32 {
-    fn into(self) -> Rotation {
-        Rotation::new(self)
+impl From<f32> for Rotation {
+    fn from(val: f32) -> Self {
+        Rotation::new(val)
     }
 }
 
@@ -24,15 +24,15 @@ pub struct Point {
     y: f32,
 }
 
-impl Into<Point> for (f32, f32) {
-    fn into(self) -> Point {
-        Point::new(self.0, self.1)
+impl From<(f32, f32)> for Point {
+    fn from(val: (f32, f32)) -> Self {
+        Point::new(val.0, val.1)
     }
 }
 
-impl Into<(f32, f32)> for Point {
-    fn into(self) -> (f32, f32) {
-        (self.x, self.y)
+impl From<Point> for (f32, f32) {
+    fn from(val: Point) -> Self {
+        (val.x, val.y)
     }
 }
 

@@ -3,10 +3,10 @@ use std::collections::VecDeque;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum EventNames {
-    Sit,
-    Stand,
-    Walk,
-    Flag,
+    // Sit,
+    // Stand,
+    // Walk,
+    // Flag,
     About,
     Main,
 }
@@ -36,8 +36,7 @@ impl EventQueue {
 
     /// creates an event pool for a subscriber
     pub fn subscribe(&mut self, subscriber: &str) {
-        &self
-            .subscribers
+        self.subscribers
             .insert(subscriber.to_string(), VecDeque::new());
     }
 
