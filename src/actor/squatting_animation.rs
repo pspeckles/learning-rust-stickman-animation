@@ -24,6 +24,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (W - QUARTER / 2.0).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -34,6 +35,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (S + QUARTER / 3.0).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -44,6 +46,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (E + QUARTER / 2.0).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -54,6 +57,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (S - QUARTER / 3.0).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -64,6 +68,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (W - QUARTER / 1.2).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -75,6 +80,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 S.into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -85,6 +91,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (E + QUARTER / 1.2).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -95,6 +102,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 S.into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -109,6 +117,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 node.get().angle,
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -119,6 +128,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (W + QUARTER).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -129,6 +139,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (N).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -139,6 +150,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (E - QUARTER).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -149,6 +161,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (-N).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -159,6 +172,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (W + QUARTER / 3.0).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -170,6 +184,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 S.into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -180,6 +195,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 (E - QUARTER / 3.0).into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }
@@ -190,6 +206,7 @@ pub fn squatting_animation() -> AnimationFrames {
                 S.into(),
                 node.get().width,
                 node.get().height,
+                node.get().z,
             ));
             continue;
         }

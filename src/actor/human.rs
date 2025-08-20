@@ -31,9 +31,14 @@ impl DrawComponent for Human {
     fn get_drawables(&self) -> Vec<Box<dyn Drawable>> {
         let mut drawables = vec![];
         let current_animation = &self.animation.current();
-        for pose_entry in current_animation.pose.entries() {
-            let texture = to_texture(pose_entry.get());
-            let bone = to_joint(pose_entry.get());
+        let entries = current_animation.pose.entries();
+        // Build stable-sorted order by z-index: left (-1), torso/head/neck (0), right (+1)
+        let mut order: Vec<usize> = (0..entries.len()).collect();
+        order.sort_by_key(|i| entries[*i].get().z);
+        for i in order {
+            let position = entries[i].get();
+            let texture = to_texture(position);
+            let bone = to_joint(position);
             drawables.push(texture);
             drawables.push(bone);
         }
@@ -49,6 +54,8 @@ fn to_texture(position: &PositionData) -> Box<dyn Drawable> {
         position.point.x() - (position.width as f32 * (position.angle.r.to_radians()).cos()) / 2.0,
         position.point.y() - (position.width as f32 * (position.angle.r.to_radians()).sin()) / 2.0,
     ));
+    rect.set_outline_color(Color::BLUE);
+    rect.set_outline_thickness(1.0);
     rect.set_rotation(position.angle.r);
     Box::new(rect)
 }

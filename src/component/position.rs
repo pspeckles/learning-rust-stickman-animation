@@ -9,15 +9,17 @@ pub struct PositionData {
     pub angle: Rotation,
     pub width: u16,
     pub height: u16,
+    pub z: i32,
 }
 
 impl PositionData {
-    pub fn new(point: Point, angle: Rotation, width: u16, height: u16) -> Self {
+    pub fn new(point: Point, angle: Rotation, width: u16, height: u16, z: i32) -> Self {
         PositionData {
             point,
             angle,
             width,
             height,
+            z,
         }
     }
 

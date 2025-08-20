@@ -36,9 +36,9 @@ impl AnimationSystem {
             .iter()
             .for_each(|s| println!("{:?}", s.name));
         let entity = entities.get_mut(0).unwrap();
-        let animation = self.human_animations.get("t_pose").unwrap();
+        // let animation = self.human_animations.get("t_pose").unwrap();
         // let animation = self.human_animations.get("squatting").unwrap();
-        // let animation = self.human_animations.get("running").unwrap();
+        let animation = self.human_animations.get("running").unwrap();
 
         animation.update(entity.get_animation_state_mut(), dt);
     }

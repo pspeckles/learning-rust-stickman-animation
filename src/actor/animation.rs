@@ -128,7 +128,41 @@ impl AnimationFrame {
                 angle.into(),
                 target_node.get().width,
                 target_node.get().height,
+                target_node.get().z,
             ),
         )
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn interpolate_preserves_z_values() {
+        // Build two simple frames with different positions but known z values
+        // Frame A: two nodes
+        let mut g_from: Graph<PositionData> = Graph::new();
+        let root = g_from.add(Node::new(PositionData::new((0.0, 0.0).into(), 0.0.into(), 0, 0, 0)));
+        let child = g_from.add(Node::new(PositionData::new((10.0, 0.0).into(), 0.0.into(), 0, 0, 1)).set_parent(root));
+        g_from.get_mut(root).append_child(child);
+
+        // Frame B: move both nodes, change angles, but keep z; child has z = 1
+        let mut g_to = Graph::copy_graph(&g_from);
+        // mutate positions and angles but not z
+        for n in g_to.entries_mut() {
+            let mut p = *n.get();
+            p.point = (p.point.x() + 5.0, p.point.y() + 2.5).into();
+            p.angle = (p.angle.r + 15.0).into();
+            n.set(p);
+        }
+
+        let a = AnimationFrame::new(g_from, 100);
+        let b = AnimationFrame::new(g_to, 100);
+
+        // Interpolate half-way
+        let i = AnimationFrame::interpolate(&a, &b, 0.5);
+        let zs: Vec<i32> = i.pose.entries().iter().map(|n| n.get().z).collect();
+        assert_eq!(zs, vec![0, 1]);
     }
 }
