@@ -27,7 +27,7 @@ impl AnimationState {
     }
 
     pub fn set_current(&mut self, frame: Box<AnimationFrame>) {
-        self.current_frame = frame.clone();
+        self.current_frame = frame;
     }
 
     pub fn set_current_frame_time(&mut self, t: u128) {

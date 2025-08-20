@@ -11,25 +11,6 @@ pub struct PositionData {
     pub height: u16,
 }
 
-#[derive(Clone, Debug)]
-pub struct Position {
-    data: PositionData,
-}
-
-impl Position {
-    pub fn new(position: PositionData) -> Self {
-        Position { data: position }
-    }
-
-    fn position(&self) -> &PositionData {
-        &self.data
-    }
-
-    fn set_position(&mut self, position: PositionData) {
-        self.data = position;
-    }
-}
-
 impl PositionData {
     pub fn new(point: Point, angle: Rotation, width: u16, height: u16) -> Self {
         PositionData {

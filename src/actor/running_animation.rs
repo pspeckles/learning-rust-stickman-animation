@@ -5,7 +5,7 @@ use super::{
     t_pose::{t_pose, E, N, QUARTER, S, W},
 };
 
-pub fn squatting_animation() -> AnimationFrames {
+pub fn running_animation() -> AnimationFrames {
     let base = t_pose().pose;
     let mut standing_pose = Graph::copy_graph(&base);
     for node in standing_pose.entries_mut().iter_mut() {
@@ -13,7 +13,7 @@ pub fn squatting_animation() -> AnimationFrames {
         //root
         if node_idx == 0 {
             let mut u = *node.get();
-            u.point = (node.get().point.x(), 245.0).into();
+            u.point = (200.0, 150.0).into();
             node.set(u);
             continue;
         }
@@ -21,7 +21,7 @@ pub fn squatting_animation() -> AnimationFrames {
         if node_idx == 4 {
             node.set(PositionData::new(
                 node.get().point,
-                (W - QUARTER / 2.0).into(),
+                (E).into(),
                 node.get().width,
                 node.get().height,
             ));
@@ -105,7 +105,7 @@ pub fn squatting_animation() -> AnimationFrames {
         //root
         if node_idx == 0 {
             node.set(PositionData::new(
-                (node.get().point.x(), 325.0).into(),
+                (400.0, 150.0).into(),
                 node.get().angle,
                 node.get().width,
                 node.get().height,
@@ -116,7 +116,7 @@ pub fn squatting_animation() -> AnimationFrames {
         if node_idx == 4 {
             node.set(PositionData::new(
                 node.get().point,
-                (W + QUARTER).into(),
+                (E + QUARTER).into(),
                 node.get().width,
                 node.get().height,
             ));

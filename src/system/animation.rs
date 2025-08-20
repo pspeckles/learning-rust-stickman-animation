@@ -1,7 +1,10 @@
 use std::collections::HashMap;
 
 use crate::{
-    actor::{animation::AnimationFrames, squatting_animation::squatting_animation, t_pose::t_pose},
+    actor::{
+        animation::AnimationFrames, running_animation::running_animation,
+        squatting_animation::squatting_animation, t_pose::t_pose,
+    },
     component::animation::AnimationComponent,
     event::EventQueue,
 };
@@ -17,6 +20,7 @@ impl AnimationSystem {
 
         human_animations.insert("squatting".to_string(), squatting_animation());
         human_animations.insert("t_pose".to_string(), AnimationFrames::new(vec![t_pose()]));
+        human_animations.insert("running".to_string(), running_animation());
 
         AnimationSystem { human_animations }
     }
@@ -32,7 +36,9 @@ impl AnimationSystem {
             .iter()
             .for_each(|s| println!("{:?}", s.name));
         let entity = entities.get_mut(0).unwrap();
-        let animation = self.human_animations.get("squatting").unwrap();
+        let animation = self.human_animations.get("t_pose").unwrap();
+        // let animation = self.human_animations.get("squatting").unwrap();
+        // let animation = self.human_animations.get("running").unwrap();
 
         animation.update(entity.get_animation_state_mut(), dt);
     }

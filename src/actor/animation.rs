@@ -15,16 +15,6 @@ impl AnimationFrames {
     }
 
     pub fn update(&self, entity: &mut AnimationState, dt: &u128) {
-        if entity.current().duration_ms == 0 {
-            if entity.next_key_frame() >= self.frames.len() {
-                entity.set_next_key_frame(0);
-            } else {
-                entity.set_next_key_frame(entity.next_key_frame() + 1);
-            }
-            return;
-        }
-
-        let last_frame = entity.current();
         let last_frame_time = entity.current_frame_time();
         let mut time_passed = *dt;
         let skip_animation =
@@ -35,6 +25,7 @@ impl AnimationFrames {
             return;
         }
 
+        let last_frame = entity.current();
         // fast forward to the latest frame based on dt
         let mut animation_time = last_frame.duration_ms;
         while entity.current_frame_time() + time_passed > animation_time {
@@ -76,7 +67,7 @@ pub struct AnimationFrame {
 impl AnimationFrame {
     pub fn new(pose: Graph<PositionData>, duration_ms: u128) -> Self {
         if duration_ms < ANIMATION_FRAME_TIME {
-            panic!("Animation duration cannot be smaller than {ANIMATION_FRAME_TIME}");
+            panic!("poses animation time is smaller than one frame {:?}", pose);
         }
         AnimationFrame { pose, duration_ms }
     }
@@ -84,10 +75,10 @@ impl AnimationFrame {
     pub fn interpolate(from: &AnimationFrame, to: &AnimationFrame, q: f32) -> Box<AnimationFrame> {
         let mut interim_pose = Graph::copy_graph(&from.pose);
         let target_pose = &to.pose;
-        let target_joints = target_pose.entries().as_slice();
+        let target_joints = target_pose.traverse();
         for joint_num in 0..target_joints.len() {
             let (node_id, position) = AnimationFrame::interpolate_joint_position(
-                target_joints,
+                target_joints.as_slice(),
                 &interim_pose,
                 joint_num,
                 q,
@@ -101,7 +92,7 @@ impl AnimationFrame {
     }
 
     fn interpolate_joint_position(
-        target_joints: &[Node<PositionData>],
+        target_joints: &[&Node<PositionData>],
         interim_pose: &Graph<PositionData>,
         join_num: usize,
         q: f32,

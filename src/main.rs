@@ -3,14 +3,12 @@ use std::time::Instant;
 use actor::human::Human;
 use component::animation::AnimationComponent;
 use component::draw::DrawComponent;
-use component::position::{Position, PositionData};
 use sfml::graphics::Color;
 use sfml::graphics::{RenderTarget, RenderWindow};
 use sfml::system::Vector2f;
 use sfml::window::{mouse, Event, Style};
 
 mod actor;
-// mod animation_controller;
 mod component;
 mod event;
 mod system;
@@ -32,12 +30,7 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
     //
-    let sk = Human::new(Position::new(PositionData::new(
-        (300.0, 200.0).into(),
-        120.0.into(),
-        2,
-        2,
-    )));
+    let sk = Human::new();
 
     let mut entities = vec![sk];
     let mut main_buttons = ButtonGroup::new();
@@ -98,7 +91,6 @@ fn main() {
                     .collect::<Vec<&dyn DrawComponent>>(),
             );
         }
-        // figure.draw(&mut window);
         main_buttons.draw(&mut window);
         window.display();
         dt = now.elapsed().as_millis();

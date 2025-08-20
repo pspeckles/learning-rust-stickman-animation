@@ -15,7 +15,7 @@ pub const QUARTER: f32 = 90.0;
 pub const LIMB_WIDTH: f32 = 20.0;
 pub const LIMB_HEIGHT: f32 = 60.0;
 pub const TORSO_HEIGHT: f32 = 150.0;
-pub const TORSO_WIDTH: f32 = 60.0;
+pub const TORSO_WIDTH: f32 = 30.0;
 
 pub fn t_pose() -> AnimationFrame {
     let starting_p = PositionData::new(Point::new(300.0, 200.0), S.into(), 0, 0);
@@ -28,27 +28,27 @@ pub fn t_pose() -> AnimationFrame {
         TORSO_HEIGHT as u16,
     );
     let right_upper_hand_p = PositionData::new(
-        Point::new(-TORSO_WIDTH / 2.0, -TORSO_HEIGHT),
-        W.into(),
+        Point::new(TORSO_WIDTH / 3.0, -TORSO_HEIGHT),
+        (E + QUARTER / 3.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
     );
     let right_lower_hand_p = PositionData::new(
         Point::new(0.0, 0.0),
-        W.into(),
+        (E + QUARTER / 3.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
     );
     let left_upper_hand_p = PositionData::new(
         Point::new(TORSO_WIDTH / 2.0, -TORSO_HEIGHT),
-        // (E - 34.0).into(),
-        E.into(),
+        (E - QUARTER / 3.0).into(),
+        // E.into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
     );
     let left_lower_hand_p = PositionData::new(
         Point::new(0.0, 0.0),
-        E.into(),
+        (E - QUARTER / 3.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
     );
@@ -100,11 +100,10 @@ pub fn t_pose() -> AnimationFrame {
         .get_mut(standing)
         .append_children(vec![head, neck]);
     standing_pose.get_mut(neck).append_child(torso);
-    standing_pose.get_mut(torso).append_children(vec![
-        right_upper_hand,
-        left_upper_hand,
-        lower_back,
-    ]);
+    // Ensure left upper hand is enqueued before right and torso draws after children
+    standing_pose
+        .get_mut(torso)
+        .append_children(vec![left_upper_hand, right_upper_hand, lower_back]);
     standing_pose
         .get_mut(right_upper_hand)
         .append_child(right_lower_hand);
@@ -121,5 +120,5 @@ pub fn t_pose() -> AnimationFrame {
         .get_mut(left_upper_leg)
         .append_child(left_lower_leg);
 
-    AnimationFrame::new(standing_pose, 1000)
+    AnimationFrame::new(standing_pose, 20)
 }
