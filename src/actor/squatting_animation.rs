@@ -4,7 +4,7 @@ use crate::component::position::PositionNode;
 use super::{
     animation::{AnimationFrame, AnimationFrames},
     skeleton::PoseView,
-    t_pose::{t_pose_with_handles, E, N, QUARTER, S, W},
+    t_pose::{t_pose_with_handles, E, HALF, N, S, W},
 };
 
 pub fn squatting_animation() -> AnimationFrames {
@@ -17,18 +17,15 @@ pub fn squatting_animation() -> AnimationFrames {
         let r = *view.root_mut().get();
         view.root_mut().set_point((r.point.x(), 245.0).into());
         view.right_upper_arm_mut()
-            .set_angle((W - QUARTER / 2.0).into());
+            .set_angle((W - HALF / 2.0).into());
         view.right_lower_arm_mut()
-            .set_angle((S + QUARTER / 3.0).into());
-        view.left_upper_arm_mut()
-            .set_angle((E + QUARTER / 2.0).into());
-        view.left_lower_arm_mut()
-            .set_angle((S - QUARTER / 3.0).into());
+            .set_angle((S + HALF / 3.0).into());
+        view.left_upper_arm_mut().set_angle((E + HALF / 2.0).into());
+        view.left_lower_arm_mut().set_angle((S - HALF / 3.0).into());
         view.right_upper_leg_mut()
-            .set_angle((W - QUARTER / 1.2).into());
+            .set_angle((W - HALF / 1.2).into());
         view.right_lower_leg_mut().set_angle(S.into());
-        view.left_upper_leg_mut()
-            .set_angle((E + QUARTER / 1.2).into());
+        view.left_upper_leg_mut().set_angle((E + HALF / 1.2).into());
         view.left_lower_leg_mut().set_angle(S.into());
     }
 
@@ -38,16 +35,15 @@ pub fn squatting_animation() -> AnimationFrames {
         let r = *view.root_mut().get();
         view.root_mut().set_point((r.point.x(), 325.0).into());
         // arms
-        view.right_upper_arm_mut().set_angle((W + QUARTER).into());
+        view.right_upper_arm_mut().set_angle((W + HALF).into());
         view.right_lower_arm_mut().set_angle((N).into());
-        view.left_upper_arm_mut().set_angle((E - QUARTER).into());
+        view.left_upper_arm_mut().set_angle((E - HALF).into());
         view.left_lower_arm_mut().set_angle((-N).into());
         // legs
         view.right_upper_leg_mut()
-            .set_angle((W + QUARTER / 3.0).into());
+            .set_angle((W + HALF / 3.0).into());
         view.right_lower_leg_mut().set_angle(S.into());
-        view.left_upper_leg_mut()
-            .set_angle((E - QUARTER / 3.0).into());
+        view.left_upper_leg_mut().set_angle((E - HALF / 3.0).into());
         view.left_lower_leg_mut().set_angle(S.into());
     }
 

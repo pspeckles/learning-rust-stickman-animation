@@ -7,11 +7,11 @@ use crate::component::{
 use super::animation::AnimationFrame;
 use super::skeleton::{BodyPart, SkeletonHandles};
 
-pub const N: f32 = 180.0;
-pub const E: f32 = 270.0;
+pub const N: f32 = -180.0;
+pub const E: f32 = -90.0;
 pub const W: f32 = 90.0;
 pub const S: f32 = 0.0;
-pub const QUARTER: f32 = 90.0;
+pub const HALF: f32 = 45.0;
 
 pub const LIMB_WIDTH: f32 = 20.0;
 pub const LIMB_HEIGHT: f32 = 60.0;
@@ -35,15 +35,15 @@ pub fn t_pose_with_handles() -> (AnimationFrame, SkeletonHandles) {
     );
     // Side-scroller style: front (right) arm slightly forward and down
     let right_upper_hand_p = PositionData::new(
-        Point::new(TORSO_WIDTH / 2.0, -TORSO_HEIGHT * 0.85),
-        (E + QUARTER / 8.0).into(),
+        Point::new(-TORSO_WIDTH / 4.0, -TORSO_HEIGHT * 0.85),
+        (E + HALF / 8.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         1,
     );
     let right_lower_hand_p = PositionData::new(
         Point::new(0.0, 0.0),
-        (E + QUARTER / 8.0).into(),
+        (E + HALF / 8.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         1,
@@ -51,14 +51,14 @@ pub fn t_pose_with_handles() -> (AnimationFrame, SkeletonHandles) {
     // Back (left) arm slightly forward and up
     let left_upper_hand_p = PositionData::new(
         Point::new(TORSO_WIDTH / 2.0, -TORSO_HEIGHT * 0.85),
-        (E - QUARTER / 8.0).into(),
+        (E - HALF / 8.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         -1,
     );
     let left_lower_hand_p = PositionData::new(
         Point::new(0.0, 0.0),
-        (E - QUARTER / 8.0).into(),
+        (E - HALF / 8.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         -1,
@@ -66,8 +66,8 @@ pub fn t_pose_with_handles() -> (AnimationFrame, SkeletonHandles) {
     let lower_back_p = PositionData::new(Point::new(0.0, 0.0), S.into(), 0, 0, 0);
     // Legs anchored near bottom of torso; front leg slightly forward
     let right_upper_leg_p = PositionData::new(
-        Point::new(TORSO_WIDTH / 4.0, 0.0),
-        (S - QUARTER / 16.0).into(),
+        Point::new(-TORSO_WIDTH / 4.0, 0.0),
+        (S - HALF / 16.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         1,
@@ -81,8 +81,8 @@ pub fn t_pose_with_handles() -> (AnimationFrame, SkeletonHandles) {
     );
     // Back leg slightly backward
     let left_upper_leg_p = PositionData::new(
-        Point::new(-TORSO_WIDTH / 4.0, 0.0),
-        (S + QUARTER / 16.0).into(),
+        Point::new(TORSO_WIDTH / 4.0, 0.0),
+        (S + HALF / 16.0).into(),
         LIMB_WIDTH as u16,
         LIMB_HEIGHT as u16,
         -1,
